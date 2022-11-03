@@ -63,6 +63,36 @@ def extention_number_format(phone_list):
             phone_list[i][5] = result
     return phone_list
 
+#Задача 3 - Мы можем взять за основу, что одна запись (строка с данными) это список фиксированной длинны где каждая
+# позиция закреплена за типом значений скажем первый элемент списка это Имя, второй фамилия и так далее.
+#Дальше мы можем принять за аксиому, что вместе скажем Фамилия, Имя, Отчество вместе есть уникальный ключ,
+# т.е. мы можем сделать временный словарь где ключи это буду ФИО, а значением это список с данными, далее в цикле
+# заполняем словарь и проверяем данные, если на каком-то из индексов нет значений мы его можем заполнить новыми данными.
+# Вот в целом можно применить такую логику.
+
+def remove_dubplicates(extention_list):
+    temp_dict = {}
+    for i, val in enumerate(extention_list):
+        # print(i)
+        # print(val)
+        dict_key = f'{val[0]} {val[1]}'
+        temp_list = ['','','','','']
+        temp_dict[dict_key] = temp_list
+        for x in range(2,7):
+            # y = val[x]
+            # print(y)
+            for k, v in temp_dict.items():
+                # print(v[x-2])
+                for v_ in v:
+                    n = 0
+                    if v_ is not None:
+                        temp_list[n] = v[n]
+                    else:
+                        temp_list[n] = val[x]
+                    n+1
+        temp_dict[dict_key] = temp_list
+    return temp_dict
+
     # TODO 2: сохраните получившиеся данные в другой файл
     # код для записи файла в формате CSV
     # with open("phonebook.csv", "w") as f:
@@ -93,3 +123,8 @@ if __name__ == '__main__':
     print('')
     extention_list = extention_number_format(phone_list)
     pprint(extention_list)
+    print('')
+    print('Removal duplicates')
+    print('')
+    final_result = remove_dubplicates(extention_list)
+    print(final_result)
