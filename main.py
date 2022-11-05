@@ -61,6 +61,8 @@ def extention_number_format(phone_list):
             pattern_extention = r'\(*[доб. ]+(\d{4})+\)*'
             result = re.sub(pattern_extention, r' доб.\1', result_)
             phone_list[i][5] = result
+    # print(phone_list[4][7])
+    # phone_list.pop([4][5])
     return phone_list
 
 #Задача 3 - Мы можем взять за основу, что одна запись (строка с данными) это список фиксированной длинны где каждая
@@ -73,32 +75,47 @@ def extention_number_format(phone_list):
 def remove_dubplicates(extention_list):
     temp_dict = {}
     for i, val in enumerate(extention_list):
-        # print(i)
-        # print(val)
-        dict_key = f'{val[0]} {val[1]}'
-        temp_list = ['','','','','']
-        temp_dict[dict_key] = temp_list
-        for x in range(2,7):
-            # y = val[x]
-            # print(y)
-            for k, v in temp_dict.items():
-                # print(v[x-2])
+        temp_list = ['', '', '', '', '']
+        for k, v in temp_dict.items():
+            a = f'{val[0]} {val[1]}'
+            n = 0
+            x = 2
+            if k == a:
                 for v_ in v:
-                    n = 0
-                    if v_ is not None:
-                        temp_list[n] = v[n]
+                    null_ = ''
+                    if v_ != null_:
+                        temp_list[n] = v_
                     else:
                         temp_list[n] = val[x]
-                    n+1
+                    n += 1
+                    x += 1
+            else:
+                for m in range(0,5):
+                    temp_list[n] = val[x]
+                    n += 1
+                    x += 1
+        dict_key = f'{val[0]} {val[1]}'
         temp_dict[dict_key] = temp_list
+    temp_dict['lastname firstname'] = ['surname','organization','position','phone','email']
     return temp_dict
 
-    # TODO 2: сохраните получившиеся данные в другой файл
-    # код для записи файла в формате CSV
-    # with open("phonebook.csv", "w") as f:
-    #     datawriter = csv.writer(f, delimiter=',')
-    #     # Вместо contacts_list подставьте свой список
-    #     datawriter.writerows(contacts_list)
+def convert_to_lists(final_result):
+    list = []
+    for k,v in final_result.items():
+        list_temp = []
+        list_temp.append(k)
+        for v_ in v:
+            list_temp.append(v_)
+        list.append(list_temp)
+    return list
+
+#TODO 2: сохраните получившиеся данные в другой файл
+#код для записи файла в формате CSV
+def write_file(list_of_lists):
+    with open("phonebook.csv", "w") as f:
+        datawriter = csv.writer(f, delimiter=',')
+        # Вместо contacts_list подставьте свой список
+        datawriter.writerows(list_of_lists)
 
 if __name__ == '__main__':
     contacts_list = open_phonebook_raw()
@@ -128,3 +145,13 @@ if __name__ == '__main__':
     print('')
     final_result = remove_dubplicates(extention_list)
     print(final_result)
+    print('')
+    print('Convert to list')
+    print('')
+    list_of_lists = convert_to_lists(final_result)
+    print(list_of_lists)
+    print('')
+    print('Write result in the file')
+    print('')
+    write_file(list_of_lists)
+
